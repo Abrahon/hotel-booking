@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<h1 class="text-center mt-5">All Hostel</h1>
+
+
+<section class="section-content padding-y">
+    <div class="container">
+
+        <div class="row">
+         
+            <main class="col-md-12">
+
+                <header class="border-bottom mb-4 pb-3">
+                    <div class="form-inline">
+                        <span class="mr-md-auto"><b>Total hostel: {{hostels|length}}</b>  </span>
+                        <!-- <span class="mr-md-auto"><b>Total hostel: {{h.count}}</b>  </span> -->
+
+                    </div>
+                </header><!-- sect-heading -->
+
+                <div class="row">
+                    {% if hostels %} {% for item in hostels %}
+
+                    <div class="col-md-3">
+                        <figure class="card card-product-grid">
+                            <div class="img-wrap">
+
+                                <a href="{% url 'find'  %}"><img src="{{ item.images.url }}">
+                                </a>
+
+                            </div> <!-- img-wrap.// -->
+                            <figcaption class="info-wrap">
+                                <div class="fix-height">
+                                    <a href="#" class="title"><b class="">{{item.hostel_name}}</b></a>
+
+                                    <div class="price-wrap mt-2">
+                                        <span class="price">$ {{item.price}}</span>
+                                        <p class="location">{{item.location}}</p>
+                                    </div> <!-- price-wrap.// -->
+                                </div>
+                                <a href="{% url 'details' item.slug %}" class="btn btn-block btn-success">Details </a>
+                            </figcaption>
+                        </figure>
+                    </div> <!-- col.// -->
+
+                    {% endfor %}{% else %}
+                    <h2 class="text-danger">No Result  available!</h2>
+                    {% endif %}
+
+                </div>
+                <!-- row end -->
+
+            </main> <!-- col.// -->
+
+        </div>
+
+    </div> <!-- container .//  -->
+</section>
+{% endblock body %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block body %}
+<section class="section-intro padding-y-sm">
+	<div class="container">
+	
+	<div class="intro-banner-wrap">
+		<img src="{% static 'images/banners/1.jpg' %}">
+			
+	</div>
+		
+			
+			</div> <!-- container //  -->
+			</section>
+			<!-- ========================= SECTION MAIN END// ========================= -->
+			
+			<!-- ========================= SECTION  ========================= -->
+			<section class="section-name padding-y-sm">
+			<div class="container">
+			
+			<header class="section-heading">
+				
+				<h3 class="section-title">Popular Hostel</h3>
+			</header><!-- sect-heading -->
+			
+				
+			<div class="row">
+				{% for item in hostels %}
+				<div class="col-md-3">
+					<div class="card card-product-grid">
+						<a href="./hostel-details.html" class="img-wrap"> <img src="{{item.images.url}}"> </a>
+						<figcaption class="info-wrap">
+							<a href="./product-detail.html" class="title">{{item.hostel_name}}</a>
+							<div class="price mt-1">{{item.price}}</div> <!-- price-wrap.// -->
+						</figcaption>
+					</div>
+				</div> 
+				{% endfor %}
+				
+
+				</div> <!-- col.// -->
+			</div> <!-- row.// -->
+			<div class="mx-auto">
+			<a href="./hostel.html" class="btn btn-outline-primary float-right text-center">See all</a>
+
+			</div>
+
+			
+			</div><!-- container // -->
+			</section>'
+	</div>
+	</div> <!-- container //  -->
+	</section>
+	<!-- ========================= SECTION MAIN END// ========================= -->
+	
+	
+	
+{% endblock body %}
