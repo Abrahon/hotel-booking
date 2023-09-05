@@ -1,7 +1,11 @@
 from django.shortcuts import render,redirect
 from.models import Hotel,Review
+# from django.contrib.comments.models import Comment
 from.forms import ReviewForm
+from django.contrib import messages
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.conf import settings
 
 
 
@@ -40,13 +44,13 @@ def hostel_details(request,hostel_slug):
     #  review funtionality
 
 def submit_review(request, hostel_id):
-    url = request.Meta.get('HTTP_REFERER')
+    url = request.META.get('HTTP_REFERER')
     if request.method == 'POST':
         try:
-            reviews = Review.objects.get(user__id = request.user.id, hostel__id = hostel_id)
+            reviews = Review.objects.get(hostel__id = hostel_id) #user__id = request.user.id,
             form = ReviewForm(request. POST,instance=reviews)
             form.save()
-            message.success(request, 'Thank you! Your review has been updated')
+            messages.success(request, 'Thank you! Your review has been updated')
             return redirect(url)
         except Review.DoesNotExist:
             form = ReviewForm(request.POST)
@@ -57,10 +61,30 @@ def submit_review(request, hostel_id):
                 data.review = form.cleaned_data['review']
                 data.ip = request.META.get('REMOTE_ADDR')
                 data.hostel_id = hostel_id
-                data.user_id = request.user.id
+                # data.user_id = request.user.id
                 data.save()
-                message.success(request, 'Thank you! Your review has been submitted')
+                messages.success(request, 'Thank you! Your review has been submitted')
                 return redirect(url)
+
+def delete_review(request,id):
+    
+    review = Review.objects.get(pk=id).delete()
+    # hostel_id = review.hostel.id
+    # review = get_object_or_404(review.get_model(), pk=id,
+    #         site__pk=settings.SITE_ID)
+    
+    # return redirect('show_book')
+    # if review.user == request.user:
+    #     review.is_removed = True
+        # review.save()
+    messages.success(request, 'You have successfully deleted the comment')
+    # else:
+    #     return redirect('hostel')
+    return redirect('hotel_details')
+
+
+
+
         
             
 
@@ -82,4 +106,5 @@ def search(request):
         }
               
     return render(request, 'hostel.html',context)
+
 

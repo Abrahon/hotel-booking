@@ -14,7 +14,7 @@
 				<aside class="col-md-6">
 					<article class="gallery-wrap">
 						<div class="img-big-wrap">
-							<a href="#"><img src="{{hostel.images.url}}"></a>
+							<a href="#"><img src="{{single_room.images.url}}"></a>
 						</div>
 						<!-- img-big-wrap.// -->
 
@@ -23,21 +23,32 @@
 				<main class="col-md-6 border-left">
 					<article class="content-body">
 
-						<h2 class="title">{{hostel}}</h2>
+						<h2 class="title">{{single_room.hostel_name}}</h2>
+
+						<div class="rating-star">
+						<span>
+						<i class="fa fa-star{% if single_room.averageReview < 0.5 %}-o{% elif single_room.averageReview >= 0.5 and single_room.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+						<i class="fa fa-star{% if single_room.averageReview < 1.5 %}-o{% elif single_room.averageReview >= 1.5 and single_room.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+						<i class="fa fa-star{% if single_room.averageReview < 2.5 %}-o{% elif single_room.averageReview >= 2.5 and single_room.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+						<i class="fa fa-star{% if single_room.averageReview < 3.5 %}-o{% elif single_room.averageReview >= 3.5 and single_room.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+						<i class="fa fa-star{% if single_room.averageReview < 4.5 %}-o{% elif single_room.averageReview >= 4.5 and single_room.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                        <span>{{single_room.countReview}} reviews</span>
+						</span>
+						</div>
 
 
 						<div class="mb-3">
-							<var class="price h4">$ {{hostel.price}}</var>
+							<var class="price h4">$ {{single_room.price}}</var>
 						</div>
 
-						<p>{{hostel.description}}</p>
-						<p><b>{{hostel.location}}</b></p>
-						<p><b>available room :{{hostel.stock}}</b></p>
+						<p>{{single_room.description}}</p>
+						<p><b>{{single_room.location}}</b></p>
+						<p><b>available room :{{single_room.stock}}</b></p>
 
 						<hr>
 						<a href="{% url 'booking'  %}" class="btn  btn-primary"> <span class="text">Add Booking</span>
 						</a>
-					</article> <!-- product-info-aside .// -->
+					</article> <!-- room-info-aside .// -->
 				</main> <!-- col.// -->
 			</div>
 
@@ -55,9 +66,11 @@
 
 
 
-				<form action="{% url 'submit_review' %}" method="POST">
+				<form action="{% url 'submit_review' single_room.id %}" method="POST">
+					
 					{% csrf_token %}
 					<h5>Write Your Review</h5>
+					
 
 					<div>
 						<!-- Rating stars -->
@@ -87,19 +100,24 @@
 						</div>
 						<br>
 						Review Title:
-						<input type="text" class="form-control" name="subject">
+						<input type="text" class="form-control" name="subject" >
+						<!-- <input type="hidden" name="next" value="{{  request.GET.next }}" /> -->
 						<br>
 						Review:
 						<textarea name="review" rows="4" class="form-control"></textarea>
 						<br>
+					
+				
+						
 						{% if user.is_authenticated %}
 						
 						<input type="submit" value="Submit Review" class="btn btn-primary">
 						
 						
 						{% else %}
-		<p>You must be logged in to post a review. <span><a href="{% url 'login' %}">Login
-									now</a></span></p>
+	                   <p>You must be logged in to post a review. 
+		               <span><a href="{% url 'login' %}">Login now</a></span>
+					    </p>
 						{% endif %}
 
 					</div>
@@ -112,11 +130,15 @@
       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
         {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error: {% endif %}
         {{ message }}
+		
     </div>
+	
     </div>
     {% endfor %}
 
+
 {% endif %}
+
 					
 				</form>
 				<br>
@@ -124,18 +146,19 @@
 					<h3>Customer Reviews </h3>
 					<div class="rating-star">
 						<span>
-							<i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}"
+							<i class="fa fa-star{% if single_room.averageReview < 0.5 %}-o{% elif single_room.averageReview >= 0.5 and single_room.averageReview < 1 %}-half-o {% endif %}"
 								aria-hidden="true"></i>
-							<i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}"
+							<i class="fa fa-star{% if single_room.averageReview < 1.5 %}-o{% elif single_room.averageReview >= 1.5 and single_room.averageReview < 2 %}-half-o {% endif %}"
 								aria-hidden="true"></i>
-							<i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o {% endif %}"
+							<i class="fa fa-star{% if single_room.averageReview < 2.5 %}-o{% elif single_room.averageReview >= 2.5 and single_room.averageReview < 3 %}-half-o {% endif %}"
 								aria-hidden="true"></i>
-							<i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o {% endif %}"
+							<i class="fa fa-star{% if single_room.averageReview < 3.5 %}-o{% elif single_room.averageReview >= 3.5 and single_room.averageReview < 4 %}-half-o {% endif %}"
 								aria-hidden="true"></i>
-							<i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}"
+							<i class="fa fa-star{% if single_room.averageReview < 4.5 %}-o{% elif single_room.averageReview >= 4.5 and single_room.averageReview < 5 %}-half-o {% endif %}"
 								aria-hidden="true"></i>
 							<span>{{single_hostel.countReview}} reviews</span>
 						</span>
+						
 					</div>
 
 				</header>
@@ -163,12 +186,29 @@
 							</div>
 						</div>
 					</div> <!-- icontext.// -->
-					<div class="mt-3">
+					<div class="mt-3 d-flex justify-content-between">
+						<div>
 						<h6>{{review.subject}}</h6>
-						<p>
-							{{review.review}}
-						</p>
+						 <p>{{review.review}}</p>
+						</div>
+
+						
+						<!-- {% if request.user.username == review.username %} -->
+						<a href="{% url 'delete_review' review.id %}" class="btn btn-danger">Delete</a> 
+						  
+						<!-- {% endif %} -->
+						
+							
+						
+							
+						</div>
+						
+						<div>
+							
+						
 					</div>
+					
+					
 				</article>
 				{% endfor %}
 

@@ -31,4 +31,8 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+def user_dashboard(request):
+    return render(request, 'dashboard.html')
     

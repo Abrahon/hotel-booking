@@ -6,7 +6,7 @@
 	<div class="container">
 	
 	<div class="intro-banner-wrap">
-		<img src="{% static 'images/banners/1.jpg' %}">
+		<img class="width: 100" src="{% static 'images/banners/2.jpg' %}">
 			
 	</div>
 		
@@ -29,10 +29,11 @@
 				{% for item in hostels %}
 				<div class="col-md-3">
 					<div class="card card-product-grid">
-						<a href="./hostel-details.html" class="img-wrap"> <img src="{{item.images.url}}"> </a>
+						<a href="{{hostel.get_url}}" class="img-wrap"> <img src="{{item.images.url}}"> </a>
 						<figcaption class="info-wrap">
-							<a href="./product-detail.html" class="title">{{item.hostel_name}}</a>
-							<div class="price mt-1">{{item.price}}</div> <!-- price-wrap.// -->
+							<a href="{{hostel.get_url}}" class="title">{{item.hostel_name}}</a>
+							<div class="price mt-1">$ {{item.price}}</div> <!-- price-wrap.// -->
+							<div class="price mt-1">{{item.location}}</div> <!-- price-wrap.// -->
 						</figcaption>
 					</div>
 				</div> 
@@ -41,8 +42,8 @@
 
 				</div> <!-- col.// -->
 			</div> <!-- row.// -->
-			<div class="mx-auto">
-			<a href="./hostel.html" class="btn btn-outline-primary float-right text-center">See all</a>
+			<div class=" d-flex justify-content-center ">
+			<button type="button"  class="btn btn-outline-primary btn-lg"><a href="{% url 'hostel' %}">See all</a></button>
 
 			</div>
 
