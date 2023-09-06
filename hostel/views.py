@@ -6,6 +6,10 @@ from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.conf import settings
+from django.http import HttpResponse
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required  # Import the login_required decorator
 
 
 
@@ -43,15 +47,18 @@ def hostel_details(request,hostel_slug):
  
     #  review funtionality
 
+ 
+@login_required  # Ensure that the user is logged in before accessing this view
 def submit_review(request, hostel_id):
     url = request.META.get('HTTP_REFERER')
+ 
     if request.method == 'POST':
         try:
-            reviews = Review.objects.get(hostel__id = hostel_id) #user__id = request.user.id,
-            form = ReviewForm(request. POST,instance=reviews)
+            # Assuming your Review model has a ForeignKey to User called 'user'
+            reviews = Review.objects.get(hostel__id=hostel_id, user=request.user)
+            form = ReviewForm(request.POST, instance=reviews)
             form.save()
             messages.success(request, 'Thank you! Your review has been updated')
-            return redirect(url)
         except Review.DoesNotExist:
             form = ReviewForm(request.POST)
             if form.is_valid():
@@ -61,35 +68,25 @@ def submit_review(request, hostel_id):
                 data.review = form.cleaned_data['review']
                 data.ip = request.META.get('REMOTE_ADDR')
                 data.hostel_id = hostel_id
-                # data.user_id = request.user.id
+                data.user = request.user  # Assign the logged-in user to the review
                 data.save()
                 messages.success(request, 'Thank you! Your review has been submitted')
-                return redirect(url)
+ 
+        return redirect(url)
+ 
+    return HttpResponse("Invalid request method")
+
 
 def delete_review(request,id):
     
     review = Review.objects.get(pk=id).delete()
-    # hostel_id = review.hostel.id
-    # review = get_object_or_404(review.get_model(), pk=id,
-    #         site__pk=settings.SITE_ID)
-    
-    # return redirect('show_book')
-    # if review.user == request.user:
-    #     review.is_removed = True
-        # review.save()
+   
     messages.success(request, 'You have successfully deleted the comment')
     # else:
     #     return redirect('hostel')
     return redirect('hotel_details')
 
 
-
-
-        
-            
-
-
-       
 # search funtionality
 def search(request):
     if 'keyword' in request.GET:

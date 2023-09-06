@@ -1,10 +1,12 @@
 from django.db import models
 from django.urls import reverse
 from django.db.models import Avg, Count
+from django.contrib.auth.models import User
  
  
  
 class Hotel(models.Model):
+    # user = models.CharField(max_length=30)
     hostel_name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     description = models.CharField(max_length=500, blank=True)
@@ -37,7 +39,8 @@ class Hotel(models.Model):
         return count
  
 class Review(models.Model):
-    user = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='user_reviews')
+    # user = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='user_reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_reviews')
     hostel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hostel_reviews', null=True, blank=True)
     subject = models.CharField(max_length=100, null=True, blank=True)
     review = models.TextField(max_length=250, null=True, blank=True)
@@ -46,6 +49,7 @@ class Review(models.Model):
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
  
     def __str__(self):
         return str(self.id)
