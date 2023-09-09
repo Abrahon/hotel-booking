@@ -48,7 +48,7 @@
 						<hr>
 						<form method="post">
 							{% csrf_token %}
-							<a href="{% url 'booking' %}" class="btn  btn-primary"> <span class="text">Add Booking</span>
+							<a href="{% url 'add_booking' single_room.id %}" class="btn  btn-primary"> <span class="text">Add Booking</span>
 							</a>
 
 						</form>
@@ -197,17 +197,14 @@
 						 <p>{{review.review}}</p>
 						</div>
 
-						<p>{{request.user}}</p>
-						<p>{{review.user}}</p>
+						<!-- <p>{{request.user}}</p>
+						<p>{{review.user}}</p> -->
 
 						
-						{% if request.user.username == review.user %}
+						{% if request.user == review.user %}
 						<a href="{% url 'delete_review' review.id %}" class="btn btn-danger">Delete</a> 
-						{% else %}
-						<button>login</button>
-						{% endif %}
 						
-							
+						{% endif %}
 						
 							
 						</div>

@@ -1,5 +1,6 @@
 from django.db import models
 from hostel.models import Hotel
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Booking(models.Model):
@@ -11,8 +12,9 @@ class Booking(models.Model):
     
 
 class BookingItem(models.Model):
-    hostel = models.OneToOneField(Hotel, on_delete=models.CASCADE)
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    hostel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, null = True)
     quantity = models.IntegerField()
     is_active = models.BooleanField(default=True)
     
@@ -21,3 +23,5 @@ class BookingItem(models.Model):
     
     def __str__(self):
         return str(self.hostel)
+
+    

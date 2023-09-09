@@ -51,7 +51,7 @@
         </script>
       </head>
 <body>
-  {{request.user.first_name}}
+  
     <header class="section-header">
         <nav class="navbar p-md-0 navbar-expand-sm navbar-light border-bottom">
           <div class="container">
@@ -155,42 +155,72 @@
       {% endblock body %}
        <!-- footer section start -->
       
-       <footer class="section-footer border-top">
+       <footer class="section-footer border-top margin-top">
         <div class="container">
-            <section class="footer-bottom border-top row">
-                <div class="col-md-2">
-                    <p class="text-muted"> &copy 2023 </p>
-                </div>
-                <div class="col-md-8 text-md-center">
-                    <span  class="px-2">info@pixsellz.io</span>
-                    <span  class="px-2">+879-332-9375</span>
-                    <span  class="px-2">Street name 123, Avanue abc</span>
-                </div>
-                <div class="col-md-2 text-md-right text-muted">
-                    <i class="fab fa-lg fa-cc-visa"></i>
-                    <i class="fab fa-lg fa-cc-paypal"></i>
-                    <i class="fab fa-lg fa-cc-mastercard"></i>
-                </div>
-                <div>
-                  <h4 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Help center</h4>
-                  <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                      <li class="mb-4">
-                          <a href="#" class="hover:underline">Discord Server</a>
-                      </li>
-                      <li class="mb-4">
-                          <a href="#" class="hover:underline">Twitter</a>
-                      </li>
-                      <li class="mb-4">
-                          <a href="#" class="hover:underline">Facebook</a>
-                      </li>
-                      <li class="mb-4">
-                          <a href="#" class="hover:underline">Contact Us</a>
-                      </li>
-                  </ul>
+          <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <div>
+                <h3>Logo</h3>
+                <p class="mb-30 footer-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad soluta facilis
+                  eos quia optio iusto odit atque eum tempore, quisquam officiis vero veniam hic,</p>
               </div>
-            </section>
-        </div><!-- //container -->
-    </footer>
+            </div>
+            <div class="col-xl-2 offset-xl-1 col-lg-2 col-md-6">
+              <div class="">
+                <h4>Quick Link</h4>
+                <ul class="list-unstyled">
+                  <li>
+                    <a href="#" class="text-decoration-none">Home</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-decoration-none">About Us</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-decoration-none">Service</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-decoration-none">Contact</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6">
+              <div>
+                <h4>Service</h4>
+                <ul class="list-unstyled">
+                  <li>
+                    <a href="#" class="text-decoration-none">Marketing</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-decoration-none">Branding</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-decoration-none">Web Design</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-decoration-none">Graphics Design</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6">
+              <div>
+                <h4>Newsletter</h4>
+                <div>
+                  <label for="Newsletter" class="form-label">Subscribe To Our Newsletter</label>
+                  <input type="text" class="form-control" Placeholder="Enter Your Email">
+                  <button class="btn btn-danger mt-3">Subscribe</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="copyright">
+              <p>Developed and maintained by <a href="#" target="_blank">company</a></p>
+            </div>
+          </div>
+        </div>
+      </footer>
 
       <!-- footer section end -->
     

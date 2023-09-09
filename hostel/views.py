@@ -22,17 +22,8 @@ def hostel(request):
     return render(request, 'hostel.html', context)
 
 def hostel_details(request,hostel_slug):
-    single_room = Hotel.objects.get(slug = hostel_slug)# get single product k anar jonno// filter list product dibe
+    single_room = Hotel.objects.get(id = hostel_slug)# get single product k anar jonno// filter list product dibe
     
-    # if request.user.is_authenticated:
-    #     try:
-    #         booking_hostel = BookingHostel.objects.filter(user=request.user, hostel_id=single_room.id).exists()
-    #     except BookingHostel.DoesNotExist:
-    #         booking_hostel = None
-    # else:
-    #     booking_hostel = None
-
-    # Get the reviews
     reviews = Review.objects.filter(hostel_id=single_room.id, status=True)
 
     context = {
