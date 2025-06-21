@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
  
 # Create your views here.
 from django.http import HttpResponse
- 
+
  
 def _booking_id(request):
     booking = request.session.session_key
@@ -14,7 +14,7 @@ def _booking_id(request):
         booking = request.session.create()
     return booking
  
- 
+@login_required(login_url='login')
 def add_booking(request, hostel_id):
     current_user = request.user
     hostel = Hotel.objects.get(id=hostel_id)  # get the hostel
@@ -105,7 +105,7 @@ def remove_booking_item(request, hostel_id, booking_item_id):
     booking_item.delete()
     return redirect('booking')
  
- 
+@login_required(login_url='login')
 def booking(request, total=0, quantity=0, booking_items=None):
     try:
        
@@ -156,3 +156,25 @@ def checkout(request, total=0, quantity=0, booking_items=None):
         
     }
     return render(request, 'dashboard.html', context)
+
+
+
+@login_required
+def payment_page(request, booking_item_id):
+    booking_item = get_object_or_404(BookingItem, id=booking_item_id, user=request.user)
+
+    if request.method == 'POST':
+        booking_item.is_paid = True
+        booking_item.save()
+
+        # Optionally mark the whole booking as paid if all items are paid
+        booking = booking_item.booking
+        all_paid = booking.bookingitem_set.filter(is_paid=False).count() == 0
+        if all_paid:
+            booking.is_paid = True
+            booking.save()
+
+        return redirect('booking')  # Or 'my_bookings' if you have that
+
+    return render(request, 'payment.html', {'booking': booking_item})
+

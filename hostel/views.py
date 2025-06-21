@@ -21,24 +21,28 @@ def hostel(request):
     context = {'hostels': hostels}
     return render(request, 'hostel.html', context)
 
-def hostel_details(request,hostel_slug):
-    single_room = Hotel.objects.get(id = hostel_slug)# get single product k anar jonno// filter list product dibe
-    
+from django.shortcuts import render, get_object_or_404
+from .models import Hotel, Review
+
+def hostel_details(request, hostel_slug):  # better renamed to hostel_id
+    single_room = get_object_or_404(Hotel, id=hostel_slug)
+
     reviews = Review.objects.filter(hostel_id=single_room.id, status=True)
+    related_rooms = Hotel.objects.filter(
+        location=single_room.location,
+        is_available=True
+    ).exclude(id=single_room.id)[:3]
 
     context = {
         'single_room': single_room,
-        # 'booking_hostel': booking_hostel,
         'reviews': reviews,
-        
+        'related_rooms': related_rooms,
     }
     return render(request, 'hostel_details.html', context)
 
-
- 
     #  review funtionality
 
- 
+
 @login_required  # Ensure that the user is logged in before accessing this view
 def submit_review(request, hostel_id):
     url = request.META.get('HTTP_REFERER')
@@ -68,14 +72,27 @@ def submit_review(request, hostel_id):
     return HttpResponse("Invalid request method")
 
 
-def delete_review(request,id):
-    
-    review = Review.objects.get(pk=id).delete()
-   
-    messages.success(request, 'You have successfully deleted the comment')
-    # else:
-    #     return redirect('hostel')
-    return redirect('hotel_details')
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Review  # or adjust import
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Review
+
+def delete_review(request, id):
+    review = get_object_or_404(Review, pk=id)
+
+    if request.user == review.user:
+        hostel_id = review.hostel.id  # Correct relation to Hotel
+        review.delete()
+        messages.success(request, 'You have successfully deleted the review.')
+        return redirect('hostel_details', hostel_slug=hostel_id)
+  
+    else:
+        messages.error(request, 'You are not authorized to delete this review.')
+        return redirect('hostel_details', hostel_slug=hostel_id)
+
 
 
 # search funtionality

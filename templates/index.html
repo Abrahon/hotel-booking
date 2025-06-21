@@ -1,60 +1,76 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load static %} {% block body %}
 
-{% load static %}
-{% block body %}
+<!-- ========== HERO IMAGE BANNER SECTION ========== -->
 <section class="section-intro padding-y-sm">
-	<div class="container">
-	
-	<div class="intro-banner-wrap">
-		<img class="h-50" src="{% static 'images/banners/3.jpg' %}">
-			
-	</div>
-		
-			
-			</div> <!-- container //  -->
-			</section>
-			<!-- ========================= SECTION MAIN END// ========================= -->
-			
-			<!-- ========================= SECTION  ========================= -->
-			<section class="section-name padding-y-sm">
-			<div class="container">
-			
-			<header class="section-heading">
-				
-				<h3 class="section-title">Popular Hostel</h3>
-			</header><!-- sect-heading -->
-			
-				
-			<div class="row">
-				{% for item in hostels %}
-				<div class="col-md-3">
-					<div class="card card-product-grid">
-						<a href="{{hostel.get_url}}" class="img-wrap"> <img src="{{item.images.url}}"> </a>
-						<figcaption class="info-wrap">
-							<a href="{{hostel.get_url}}" class="title">{{item.hostel_name}}</a>
-							<div class="price mt-1">$ {{item.price}}</div> <!-- price-wrap.// -->
-							<div class="price mt-1">{{item.location}}</div> <!-- lolation-wrap.// -->
-						</figcaption>
-					</div>
-				</div> 
-				{% endfor %}
-				
+  <div class="container-fluid px-0">
+    <div class="intro-banner-wrap position-relative">
+      <img
+        src="{% static 'images/banners/heroImage.PNG' %}"
+        alt="Hero Banner"
+        class="img-fluid w-100"
+        style="max-height: 500px; object-fit: cover"
+      />
+      <div
+        class="position-absolute text-white text-center w-100"
+        style="top: 40%; left: 50%; transform: translate(-50%, -50%)"
+      >
+        <h1 class="display-4 font-weight-bold">Find Your Perfect Hostel</h1>
+        <p class="lead">Comfort. Location. Price. Book Now!</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-				</div> <!-- col.// -->
-			</div> <!-- row.// -->
-			<div class=" d-flex justify-content-center ">
-			<button type="button"  class="btn btn-outline-primary btn-lg"><a href="{% url 'hostel' %}">See all</a></button>
+<!-- ========== POPULAR HOSTELS SECTION ========== -->
+<section class="section-name padding-y-sm bg-light">
+  <div class="container">
+    <header class="section-heading text-center mb-4">
+      <h3 class="section-title">Popular Hostels</h3>
+    </header>
 
-			</div>
+    <div class="row">
+      {% for item in hostels %}
+      <div class="col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch mb-4">
+        <div class="card card-product-grid w-100">
+          <a href="{{ hostel.get_url }}" class="img-wrap">
+            <img
+              src="{{ item.images.url }}"
+              class="card-img-top"
+              alt="{{ item.hostel_name }}"
+            />
+          </a>
+          <figcaption class="info-wrap p-3">
+            <a
+              href="{{ hostel.get_url }}"
+              class="title font-weight-bold d-block mb-1"
+              >{{ item.hostel_name }}</a
+            >
+            <div class="price text-success font-weight-bold mb-1">
+              $ {{ item.price }}
+            </div>
+            <div class="location text-muted">{{ item.location }}</div>
+          </figcaption>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
 
-			
-			</div><!-- container // -->
-			</section>'
-	</div>
-	</div> <!-- container //  -->
-	</section>
-	<!-- ========================= SECTION MAIN END// ========================= -->
-	
-	
-	
+    <div class="d-flex justify-content-center mt-4">
+      <a
+        href="{% url 'hostel' %}"
+        class="btn btn-lg px-5 py-3 text-white"
+        style="
+          background: linear-gradient(90deg, #0061ff, #60efff);
+          border: none;
+          border-radius: 50px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          transition: all 0.3s ease;
+        "
+      >
+        See All Hostels
+      </a>
+    </div>
+  </div>
+</section>
+
 {% endblock body %}

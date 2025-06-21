@@ -1,228 +1,250 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load static %} {% block body %}
 
-{% block body %}
-<section class="section-content padding-y bg">
-	<div class="container">
+<section class="section-content py-4 bg-light">
+  <div class="container">
+    <!-- ========== HOSTEL DETAIL CARD ========== -->
+    <div class="card mb-5 shadow-sm">
+      <div class="row g-0">
+        <!-- Image -->
+        <aside class="col-md-6">
+          <img
+            src="{{ single_room.images.url }}"
+            class="img-fluid h-100 w-100"
+            style="object-fit: cover"
+            alt="{{ single_room.hostel_name }}"
+          />
+        </aside>
 
-		<!-- ============================ COMPONENT 1 ================================= -->
-		<div class="card">
+        <!-- Info -->
+        <main class="col-md-6 border-start p-4">
+          <h2 class="mb-3">{{ single_room.hostel_name }}</h2>
 
-			<div class="row no-gutters">
+          <!-- Star Rating -->
+          {% with avg=single_room.averageReview %}
+          <div class="rating-star text-warning mb-2">
+            {% if avg >= 1 %}
+            <i class="fa fa-star"></i>
+            {% elif avg >= 0.5 %}
+            <i class="fa fa-star-half-o"></i>
+            {% else %}
+            <i class="fa fa-star-o"></i>
+            {% endif %} {% if avg >= 2 %}
+            <i class="fa fa-star"></i>
+            {% elif avg >= 1.5 %}
+            <i class="fa fa-star-half-o"></i>
+            {% else %}
+            <i class="fa fa-star-o"></i>
+            {% endif %} {% if avg >= 3 %}
+            <i class="fa fa-star"></i>
+            {% elif avg >= 2.5 %}
+            <i class="fa fa-star-half-o"></i>
+            {% else %}
+            <i class="fa fa-star-o"></i>
+            {% endif %} {% if avg >= 4 %}
+            <i class="fa fa-star"></i>
+            {% elif avg >= 3.5 %}
+            <i class="fa fa-star-half-o"></i>
+            {% else %}
+            <i class="fa fa-star-o"></i>
+            {% endif %} {% if avg >= 5 %}
+            <i class="fa fa-star"></i>
+            {% elif avg >= 4.5 %}
+            <i class="fa fa-star-half-o"></i>
+            {% else %}
+            <i class="fa fa-star-o"></i>
+            {% endif %}
+            <span class="text-muted ms-2"
+              >({{ single_room.countReview }} reviews)</span
+            >
+          </div>
+          {% endwith %}
 
+          <h4 class="text-success">$ {{ single_room.price }}</h4>
+          <p class="text-muted">
+            <i class="fa fa-map-marker-alt text-danger me-1"></i>
+            {{ single_room.location }}
+          </p>
+          <p><strong>Available Rooms:</strong> {{ single_room.stock }}</p>
+          <p class="mt-3">{{ single_room.description }}</p>
 
-
-				<aside class="col-md-6">
-					<article class="gallery-wrap">
-						<div class="img-big-wrap">
-							<a href="#"><img src="{{single_room.images.url}}"></a>
-						</div>
-						<!-- img-big-wrap.// -->
-
-					</article> <!-- gallery-wrap .end// -->
-				</aside>
-				<main class="col-md-6 border-left">
-					<article class="content-body">
-
-						<h2 class="title">{{single_room.hostel_name}}</h2>
-
-						<div class="rating-star">
-						<span>
-						<i class="fa fa-star{% if single_room.averageReview < 0.5 %}-o{% elif single_room.averageReview >= 0.5 and single_room.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
-						<i class="fa fa-star{% if single_room.averageReview < 1.5 %}-o{% elif single_room.averageReview >= 1.5 and single_room.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
-						<i class="fa fa-star{% if single_room.averageReview < 2.5 %}-o{% elif single_room.averageReview >= 2.5 and single_room.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
-						<i class="fa fa-star{% if single_room.averageReview < 3.5 %}-o{% elif single_room.averageReview >= 3.5 and single_room.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
-						<i class="fa fa-star{% if single_room.averageReview < 4.5 %}-o{% elif single_room.averageReview >= 4.5 and single_room.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
-                        <span>{{single_room.countReview}} reviews</span>
-						</span>
-						</div>
-
-
-						<div class="mb-3">
-							<var class="price h4">$ {{single_room.price}}</var>
-						</div>
-
-						<p>{{single_room.description}}</p>
-						<p><b>{{single_room.location}}</b></p>
-						<p><b>available room :{{single_room.stock}}</b></p>
-
-						<hr>
-						<form method="post">
-							{% csrf_token %}
-							<a href="{% url 'add_booking' single_room.id %}" class="btn  btn-primary"> <span class="text">Add Booking</span>
-							</a>
-
-						</form>
-					</article> <!-- room-info-aside .// -->
-				</main> <!-- col.// -->
-			</div>
-
-
-
-
-			<!-- row.// -->
-		</div> <!-- card.// -->
-		<!-- ============================ COMPONENT 1 END .// ================================= -->
-
-		<br>
-
-		<div class="row">
-			<div class="col-md-9">
-
-
-
-				<form action="{% url 'submit_review' single_room.id %}" method="POST">
-					
-					{% csrf_token %}
-					<h5>Write Your Review</h5>
-					
-
-					<div>
-						<!-- Rating stars -->
-						<label>How do you rate this hostel?</label>
-						<br>
-						<div class="rate">
-							<input type="radio" name="rating" id="rating10" value="5" required /><label for="rating10"
-								title="5"></label>
-							<input type="radio" name="rating" id="rating9" value="4.5" required /><label for="rating9"
-								title="4.5" class="half"></label>
-							<input type="radio" name="rating" id="rating8" value="4" required /><label for="rating8"
-								title="4"></label>
-							<input type="radio" name="rating" id="rating7" value="3.5" required /><label for="rating7"
-								title="3.5" class="half"></label>
-							<input type="radio" name="rating" id="rating6" value="3" required /><label for="rating6"
-								title="3"></label>
-							<input type="radio" name="rating" id="rating5" value="2.5" required /><label for="rating5"
-								title="2.5" class="half"></label>
-							<input type="radio" name="rating" id="rating4" value="2" required /><label for="rating4"
-								title="2"></label>
-							<input type="radio" name="rating" id="rating3" value="1.5" required /><label for="rating3"
-								title="1.5" class="half"></label>
-							<input type="radio" name="rating" id="rating2" value="1" required /><label for="rating2"
-								title="1"></label>
-							<input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1"
-								title="0.5" class="half"></label>
-						</div>
-						<br>
-						Review Title:
-						<input type="text" class="form-control" name="subject" >
-						<!-- <input type="hidden" name="next" value="{{  request.GET.next }}" /> -->
-						<br>
-						Review:
-						<textarea name="review" rows="4" class="form-control"></textarea>
-						<br>
-					
-				
-						
-						{% if user.is_authenticated %}
-						
-						<input type="submit" value="Submit Review" class="btn btn-primary">
-						
-						{% else %}
-
-	                   <p>You must be logged in to post a review. 
-		               <span><a href="{% url 'login' %}">Login now</a></span>
-					    </p>
-						{% endif %}
-
-					</div>
-
-					{% if messages %}
-
-    {% for message in messages %}
-    <div id="message" class="container">
-    <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %} role="alert">
-      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error: {% endif %}
-        {{ message }}
-		
+          <!-- Booking -->
+          <a
+            href="{% url 'add_booking' single_room.id %}"
+            class="btn btn-primary w-100 mt-3"
+          >
+            Book Now
+          </a>
+        </main>
+      </div>
     </div>
-	
+
+    <!-- ========== SUBMIT REVIEW ========== -->
+    <div class="card mb-5 p-4 shadow-sm">
+      <h4 class="mb-4">Leave a Review</h4>
+
+      {% if user.is_authenticated %}
+      <form action="{% url 'submit_review' single_room.id %}" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Rating</label>
+          <div class="rate">
+            <input type="radio" id="star1" name="rating" value="5" required />
+            <label for="star1" title="5"></label>
+
+            <input type="radio" id="star2" name="rating" value="4.5" />
+            <label for="star2" title="4.5"></label>
+
+            <input type="radio" id="star3" name="rating" value="4" />
+            <label for="star3" title="4"></label>
+
+            <input type="radio" id="star4" name="rating" value="3.5" />
+            <label for="star4" title="3.5"></label>
+
+            <input type="radio" id="star5" name="rating" value="3" />
+            <label for="star5" title="3"></label>
+
+            <input type="radio" id="star6" name="rating" value="2.5" />
+            <label for="star6" title="2.5"></label>
+
+            <input type="radio" id="star7" name="rating" value="2" />
+            <label for="star7" title="2"></label>
+
+            <input type="radio" id="star8" name="rating" value="1.5" />
+            <label for="star8" title="1.5"></label>
+
+            <input type="radio" id="star9" name="rating" value="1" />
+            <label for="star9" title="1"></label>
+
+            <input type="radio" id="star10" name="rating" value="0.5" />
+            <label for="star10" title="0.5"></label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="subject" class="form-label">Review Title</label>
+          <input
+            type="text"
+            name="subject"
+            id="subject"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="review" class="form-label">Your Review</label>
+          <textarea
+            name="review"
+            id="review"
+            class="form-control"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit Review</button>
+      </form>
+      {% else %}
+      <p class="text-muted">
+        You must <a href="{% url 'login' %}">log in</a> to post a review.
+      </p>
+      {% endif %} {% if messages %} {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} mt-3">{{ message }}</div>
+      {% endfor %} {% endif %}
     </div>
-    {% endfor %}
 
+    <!-- ========== CUSTOMER REVIEWS ========== -->
+    <div class="mb-5">
+      <h4>Customer Reviews</h4>
+      {% for review in reviews %}
+      <div class="card p-3 mb-3 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="mb-0">{{ review.user.full_name }}</h5>
+            <small class="text-muted">{{ review.updated_at }}</small>
+          </div>
+          {% if request.user == review.user %}
+          <a
+            href="{% url 'delete_review' review.id %}"
+            class="btn btn-sm btn-danger"
+          >
+            Delete
+          </a>
+          {% endif %}
+        </div>
 
-{% endif %}
+        <div class="rating-star mt-2 text-warning">
+          {% with r=review.rating %} {% if r >= 1 %}
+          <i class="fa fa-star"></i>
+          {% elif r >= 0.5 %}
+          <i class="fa fa-star-half-o"></i>
+          {% else %}
+          <i class="fa fa-star-o"></i>
+          {% endif %} {% if r >= 2 %}
+          <i class="fa fa-star"></i>
+          {% elif r >= 1.5 %}
+          <i class="fa fa-star-half-o"></i>
+          {% else %}
+          <i class="fa fa-star-o"></i>
+          {% endif %} {% if r >= 3 %}
+          <i class="fa fa-star"></i>
+          {% elif r >= 2.5 %}
+          <i class="fa fa-star-half-o"></i>
+          {% else %}
+          <i class="fa fa-star-o"></i>
+          {% endif %} {% if r >= 4 %}
+          <i class="fa fa-star"></i>
+          {% elif r >= 3.5 %}
+          <i class="fa fa-star-half-o"></i>
+          {% else %}
+          <i class="fa fa-star-o"></i>
+          {% endif %} {% if r >= 5 %}
+          <i class="fa fa-star"></i>
+          {% elif r >= 4.5 %}
+          <i class="fa fa-star-half-o"></i>
+          {% else %}
+          <i class="fa fa-star-o"></i>
+          {% endif %} {% endwith %}
+        </div>
 
-					
-				</form>
-				<br>
-				<header class="section-heading">
-					<h3>Customer Reviews </h3>
-					<div class="rating-star">
-						<span>
-							<i class="fa fa-star{% if single_room.averageReview < 0.5 %}-o{% elif single_room.averageReview >= 0.5 and single_room.averageReview < 1 %}-half-o {% endif %}"
-								aria-hidden="true"></i>
-							<i class="fa fa-star{% if single_room.averageReview < 1.5 %}-o{% elif single_room.averageReview >= 1.5 and single_room.averageReview < 2 %}-half-o {% endif %}"
-								aria-hidden="true"></i>
-							<i class="fa fa-star{% if single_room.averageReview < 2.5 %}-o{% elif single_room.averageReview >= 2.5 and single_room.averageReview < 3 %}-half-o {% endif %}"
-								aria-hidden="true"></i>
-							<i class="fa fa-star{% if single_room.averageReview < 3.5 %}-o{% elif single_room.averageReview >= 3.5 and single_room.averageReview < 4 %}-half-o {% endif %}"
-								aria-hidden="true"></i>
-							<i class="fa fa-star{% if single_room.averageReview < 4.5 %}-o{% elif single_room.averageReview >= 4.5 and single_room.averageReview < 5 %}-half-o {% endif %}"
-								aria-hidden="true"></i>
-							<span>{{single_hostel.countReview}} reviews</span>
-						</span>
-						
-					</div>
-
-				</header>
-
-				{% for review in reviews %}
-				<article class="box mb-3">
-					<div class="icontext w-100">
-
-						<div class="text">
-							<span class="date text-muted float-md-right">{{review.updated_at}} </span>
-							<h6 class="mb-1">{{review.user.full_name}} </h6>
-							<div class="rating-star">
-								<span>
-									<i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}"
-										aria-hidden="true"></i>
-									<i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o {% endif %}"
-										aria-hidden="true"></i>
-									<i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o {% endif %}"
-										aria-hidden="true"></i>
-									<i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o {% endif %}"
-										aria-hidden="true"></i>
-									<i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %}"
-										aria-hidden="true"></i>
-								</span>
-							</div>
-						</div>
-					</div> <!-- icontext.// -->
-					<div class="mt-3 d-flex justify-content-between">
-						<div>
-						
-						<h6>{{review.subject}}</h6>
-						 <p>{{review.review}}</p>
-						</div>
-
-						<!-- <p>{{request.user}}</p>
-						<p>{{review.user}}</p> -->
-
-						
-						{% if request.user == review.user %}
-						<a href="{% url 'delete_review' review.id %}" class="btn btn-danger">Delete</a> 
-						
-						{% endif %}
-						
-							
-						</div>
-						
-						<div>
-							
-						
-					</div>
-					
-					
-				</article>
-				{% endfor %}
-
-
-			</div> <!-- col.// -->
-		</div> <!-- row.// -->
-
-
-	</div> <!-- container .//  -->
+        <h6 class="fw-bold mt-2">{{ review.subject }}</h6>
+        <p class="mb-0">{{ review.review }}</p>
+      </div>
+      {% empty %}
+      <p class="text-muted">No reviews yet. Be the first to review!</p>
+      {% endfor %}
+    </div>
+    <!-- ========== RELATED HOSTELS ========== -->
+    <div class="mb-5">
+      <h4>Related Hostels</h4>
+      <div class="row">
+        {% for hostel in related_rooms %}
+        <div class="col-md-4 mb-3">
+          <div class="card shadow-sm h-100">
+            <img
+              src="{{ hostel.images.url }}"
+              class="card-img-top"
+              alt="{{ hostel.hostel_name }}"
+              style="height: 200px; object-fit: cover"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ hostel.hostel_name }}</h5>
+              <p class="card-text text-muted">{{ hostel.location }}</p>
+              <p class="card-text text-success">${{ hostel.price }}</p>
+              <a
+                href="{% url 'hostel_details' hostel.id %}"
+                class="btn btn-sm btn-outline-primary"
+                >View Details</a
+              >
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No related hostels found.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 </section>
-{% endblock body %}
+
+{% endblock %}

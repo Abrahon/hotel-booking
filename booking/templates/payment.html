@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block body %}
+<section class="section-content padding-y bg">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-sm p-4">
+          <h4 class="mb-4 text-center">Confirm Your Payment</h4>
+
+          <p><strong>Hotel:</strong> {{ booking.hostel.hostel_name }}</p>
+          <p><strong>Total Price:</strong> ${{ booking.sub_total }}</p>
+
+          <form method="post">
+            {% csrf_token %}
+            <div class="form-group text-center mt-4">
+              <button type="submit" class="btn btn-success rounded-pill">
+                Pay Now
+              </button>
+              <a
+                href="{% url 'booking' %}"
+                class="btn btn-outline-secondary rounded-pill"
+              >
+                Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock body %}

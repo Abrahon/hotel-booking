@@ -1,47 +1,71 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load static %} {% load widget_tweaks %} {#
+Optional: only if you plan to use add_class filters #} {% block body %}
+<section class="section-conten padding-y" style="min-height: 84vh">
+  {% if request.GET.command == 'verification' %}
+  <div
+    class="container mx-auto alert alert-info text-center"
+    role="alert"
+    style="max-width: 1024px; margin-top: 100px"
+  >
+    Thank you for registering with us. We have sent a verification email to your
+    address <strong>{{ request.GET.email }}</strong>.<br /><br />
+    Already verified? <a href="{% url 'login' %}">Log in here</a>
+  </div>
+  {% else %}
+  <div class="card mx-auto shadow" style="max-width: 420px; margin-top: 100px">
+    <div class="card-body">
+      <h4 class="card-title mb-4 text-center">Sign In</h4>
 
-{% block body %}
-<section class="section-conten padding-y" style="min-height:84vh">
+      {% include 'alerts.html' %}
 
-	
-   <!-- ============================ COMPONENT LOGIN   ================================= -->
-   {% if request.GET.command == 'verification' %}
+      <form method="POST">
+        {% csrf_token %}
 
-   <div class="container mx-auto alert alert-info text-center" role="alert" style="max-width: 1024px; margin-top:100px;">
-   Thank you for registering with us. We have sent you a verification email to your email address [{{ request.GET.email }}]
-   <br><br>
-   Already verified? <a href="{% url 'login' %}">Login</a>
-   </div>
-   
-   {% else %}
-	<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
-		<div class="card-body">
-			<h4 class="card-title mb-4">Sign in</h4>
-			{% include 'alerts.html' %}
-			<form method="post">
-				{% csrf_token %}
-				<div class="form-group">
-					<input type="text" class="form-control" placeholder="User Name" name="'username">
-				</div> <!-- form-group// -->
-				<div class="form-group">
-					<input type="password" class="form-control" placeholder="Password" name="password">
-				</div> <!-- form-group// -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            placeholder="Enter your username"
+            required
+          />
+        </div>
 
-				<div class="form-group">
-					<a href="" class="float-right">Forgot password?</a>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
 
-				</div> <!-- form-group form-check .// -->
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary btn-block"> Login </button>
-				</div> <!-- form-group// -->
-			</form>
-		</div> <!-- card-body.// -->
-	</div> <!-- card .// -->
+        <div
+          class="form-group d-flex justify-content-between align-items-center"
+        >
+          <a href="#" class="text-muted small">Forgot password?</a>
+        </div>
 
-	<p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
-	<br><br>
-	<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
-{% endif %}
+        <div class="form-group">
+          <button
+            type="submit"
+            class="btn btn-primary btn-lg btn-block rounded-pill"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
+  <p class="text-center mt-4">
+    Don't have an account?
+    <a href="{% url 'register' %}"><strong>Sign up</strong></a>
+  </p>
+  <br /><br />
+  {% endif %}
 </section>
 {% endblock body %}

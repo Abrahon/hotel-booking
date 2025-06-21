@@ -5,7 +5,6 @@ def home(request):
     hostels = Hotel.objects.all().filter(is_available=True).order_by('created_date')[:8]
 
     # Get the reviews
-
     context = {
         'hostels': hostels,
        
